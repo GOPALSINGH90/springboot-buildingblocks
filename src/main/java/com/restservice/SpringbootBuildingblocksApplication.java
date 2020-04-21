@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.restservice.controller"})
+@ComponentScan(basePackages = {"com.restservice.controller", "com.restservice.services"})
 public class SpringbootBuildingblocksApplication {
 
 	public static void main(String[] args) {
