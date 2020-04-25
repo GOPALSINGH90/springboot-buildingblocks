@@ -5,18 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "user")
+@Component
 public class User {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	@NotEmpty(message = "user name can't be empty")
 	@Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
 	private String userName;
 
+	@Size(min = 2 , message = "first name should contain atleast 2 charter")
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 

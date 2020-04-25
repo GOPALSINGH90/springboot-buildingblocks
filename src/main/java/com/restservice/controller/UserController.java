@@ -3,7 +3,7 @@ package com.restservice.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.jws.soap.SOAPBinding.Use;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.function.ServerRequest.Headers;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.restservice.domain.User;
@@ -40,9 +38,9 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<User> Createuser(@RequestBody User user, UriComponentsBuilder builders) {
+	public ResponseEntity<User> Createuser(@Valid @RequestBody User user, UriComponentsBuilder builders) {
 		User createdUser = null;
-		HttpHeaders headers =  new HttpHeaders();
+		HttpHeaders headers = new HttpHeaders();
 		try {
 			createdUser = userService.createUser(user);
 			headers.setLocation(builders.path("/users/{id}").buildAndExpand(user.getId()).toUri());
@@ -81,6 +79,10 @@ public class UserController {
 
 	@GetMapping("/byusername/{userName}")
 	public User getUserByName(@PathVariable String userName) {
-		return userService.findByUserName(userName);
+		User user =  userService.findByUserName(userName);
+		if(user == null) {
+			throw  new UserNotFoundException("user not found by this name ");
+		}
+		return user;
 	}
 }
