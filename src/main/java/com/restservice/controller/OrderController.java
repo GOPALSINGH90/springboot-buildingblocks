@@ -16,8 +16,11 @@ import com.restservice.domain.User;
 import com.restservice.services.OrderService;
 import com.restservice.services.UserService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "user magament restful services", value = "OrderController")
 @RestController
-@RequestMapping("users/orders")
+@RequestMapping("/users/orders")
 public class OrderController {
 
 	@Autowired

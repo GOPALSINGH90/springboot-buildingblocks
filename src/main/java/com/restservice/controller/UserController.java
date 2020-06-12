@@ -25,8 +25,13 @@ import com.restservice.exceptions.UserExistException;
 import com.restservice.exceptions.UserNotFoundException;
 import com.restservice.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "User managment services", value = "UserController")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users/")
 public class UserController {
 
 	@Autowired
@@ -36,9 +41,9 @@ public class UserController {
 	public List<User> getUsers() {
 		return userService.getAllUser();
 	}
-
+	@ApiOperation(value = "create new User")
 	@PostMapping
-	public ResponseEntity<User> Createuser(@Valid @RequestBody User user, UriComponentsBuilder builders) {
+	public ResponseEntity<User> Createuser(@Valid @ApiParam("Api information for new user to be created") @RequestBody User user, UriComponentsBuilder builders) {
 		User createdUser = null;
 		HttpHeaders headers = new HttpHeaders();
 		try {
@@ -51,14 +56,14 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public Optional<User> getuserById(@PathVariable Long id) {
-		Optional<User> user;
+	public User getuserById(@PathVariable Long id) {
+		Optional<User> userOptional;
 		try {
-			user = userService.getuserById(id);
+			userOptional = userService.getuserById(id);
 		} catch (UserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
 		}
-		return user;
+		return userOptional.get();
 	}
 
 	@PutMapping("/{id}")
